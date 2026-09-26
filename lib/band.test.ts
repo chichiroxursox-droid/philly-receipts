@@ -13,6 +13,7 @@ import {
   partitionByUnits,
   checkQuote,
   estimateInQuote,
+  crossesZero,
   type Row,
 } from "./band.ts";
 
@@ -201,4 +202,40 @@ test("a statute written $.015 still matches an estimate of 0.015", () => {
 test("the FY2026 figure is tagged as eleven months, not a year", () => {
   const r = corpus.find((r) => r.id === "phila-fy2026-ytd-11mo")!;
   assert.match(r.units, /ELEVEN months/);
+});
+
+test("two health rows from ONE paper overlap each other yet disagree about zero", () => {
+  const panel = corpus.find((r) => r.id === "petimar-2024-adult-bmi-panel")!;
+  const cross = corpus.find((r) => r.id === "petimar-2024-adult-bmi-cross")!;
+  assert.equal(panel.study, cross.study); // same paper
+
+  // GRADE says these are consistent: their intervals overlap.
+  const c = consistency([panel, cross])!;
+  assert.equal(c.allOverlap, true);
+
+  // And yet they answer the question differently, which overlap alone hides.
+  assert.equal(crossesZero(panel), true);
+  assert.equal(crossesZero(cross), false);
+});
+
+test("crossesZero is null when the paper published no interval", () => {
+  const r = corpus.find((x) => x.id === "seiler-2021-passthrough")!;
+  assert.equal(crossesZero(r), null);
+});
+
+test("rows sharing a study carry distinct plot labels", () => {
+  const byStudy = new Map<string, Row[]>();
+  for (const r of corpus) {
+    const k = r.study;
+    byStudy.set(k, [...(byStudy.get(k) ?? []), r]);
+  }
+  for (const [study, rs] of byStudy) {
+    if (rs.length < 2) continue;
+    const shown = rs.map((r) => r.label ?? study);
+    assert.equal(
+      new Set(shown).size,
+      shown.length,
+      `${study} has ${rs.length} rows that would render with the same label`
+    );
+  }
 });

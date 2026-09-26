@@ -23,6 +23,12 @@ export type Row = {
    * published point estimate would be the most dishonest thing in the corpus.
    */
   estimate_kind?: "reported" | "null_result" | "statute" | "official_record" | "budget_estimate";
+  /**
+   * Short label for the plot when the citation alone is ambiguous. Two rows in
+   * the health view are the SAME paper and differ only by sample construction,
+   * so rendering "Petimar et al. 2024" twice tells the reader nothing.
+   */
+  label?: string;
   /** Scope/window caveat shown next to the row. */
   note?: string;
 };
@@ -53,6 +59,20 @@ export function partitionByUnits(rows: Row[], units: string | null): UnitPartiti
     plotted: rows.filter((r) => r.units === units),
     otherScale: rows.filter((r) => r.units !== units),
   };
+}
+
+/**
+ * Does the published interval contain zero?
+ *
+ * This is the difference between "we found nothing" and "we found something",
+ * and it is NOT the same question as whether two studies agree. Two intervals
+ * can overlap each other while one contains zero and the other does not, which
+ * is exactly what the two health samples do. Saying only "the studies are
+ * consistent" would hide the disagreement people actually care about.
+ */
+export function crossesZero(r: Row): boolean | null {
+  if (!hasInterval(r)) return null;
+  return (r.ci_low as number) <= 0 && (r.ci_high as number) >= 0;
 }
 
 export type Band = {

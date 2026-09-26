@@ -1,6 +1,6 @@
 "use client";
 
-import { checkQuote, hasInterval, type Row } from "@/lib/band.ts";
+import { checkQuote, crossesZero, hasInterval, type Row } from "@/lib/band.ts";
 
 const BADGE: Record<string, { label: string; cls: string }> = {
   verified: {
@@ -32,6 +32,7 @@ export default function SourceRow({
 }) {
   const check = checkQuote(row);
   const badge = BADGE[check.kind];
+  const zero = crossesZero(row);
   return (
     <li
       id={`src-${row.id}`}
@@ -43,7 +44,14 @@ export default function SourceRow({
       onClick={() => onSelect(row.id)}
     >
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <p className="font-medium text-neutral-900 dark:text-neutral-100">{row.study}</p>
+        <p className="font-medium text-neutral-900 dark:text-neutral-100">
+          {row.study}
+          {row.label && (
+            <span className="ml-2 font-normal text-neutral-500 dark:text-neutral-400">
+              {row.label}
+            </span>
+          )}
+        </p>
         {row.industry_funded && (
           <span className="rounded-full bg-orange-100 px-2 py-0.5 text-[11px] font-medium text-orange-800 dark:bg-orange-500/15 dark:text-orange-300">
             industry funded
@@ -68,10 +76,21 @@ export default function SourceRow({
         )}
       </p>
 
-      <p className="mt-2">
+      <p className="mt-2 flex flex-wrap gap-1.5">
         <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${badge.cls}`}>
           {badge.label}
         </span>
+        {zero !== null && (
+          <span
+            className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${
+              zero
+                ? "bg-neutral-200 text-neutral-700 dark:bg-neutral-700/50 dark:text-neutral-300"
+                : "bg-sky-100 text-sky-800 dark:bg-sky-500/15 dark:text-sky-300"
+            }`}
+          >
+            {zero ? "interval contains zero, no effect detected" : "interval excludes zero, effect detected"}
+          </span>
+        )}
       </p>
       <p className="mt-1.5 text-[12.5px] leading-relaxed text-neutral-500 dark:text-neutral-400">
         {check.detail}

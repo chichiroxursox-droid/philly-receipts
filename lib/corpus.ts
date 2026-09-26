@@ -3,7 +3,12 @@ import { band, consistency, partitionByUnits, type Row } from "./band.ts";
 
 export const CORPUS = corpusJson as Row[];
 
-export type OutcomeId = "price_pass_through" | "volume_net" | "employment" | "revenue";
+export type OutcomeId =
+  | "price_pass_through"
+  | "volume_net"
+  | "health"
+  | "employment"
+  | "revenue";
 
 export type Outcome = {
   id: OutcomeId;
@@ -45,6 +50,15 @@ export const OUTCOMES: Outcome[] = [
       "In-city sales fell hard. Once purchases just over the city line are counted, the drop shrinks. No paper here published an interval, so the spread between them is all the uncertainty you get.",
   },
   {
+    id: "health",
+    question: "Did anyone actually get healthier?",
+    short: "Health",
+    plotUnits: "kg/m2 change at 3 years",
+    axisLabel: "change in adult BMI after three years, kg/m2",
+    takeaway:
+      "Look at the two plotted rows. They are the same paper, the same city and the same three years. The panel sample follows the same adults over time and its interval crosses zero. The cross-sectional sample takes different people each period and its interval does not. The dental paper below splits the same way. So the honest sentence is that whether this tax improved health depends on how you build your sample, and the published work does not settle it.",
+  },
+  {
     id: "employment",
     question: "Did it cost jobs?",
     short: "Employment",
@@ -62,6 +76,7 @@ export const OUTCOMES: Outcome[] = [
     short: "Revenue",
     plotUnits: null,
     axisLabel: "",
+    alsoShow: ["spending"],
     noChartReason:
       "These are city records, not study estimates, and they are not comparable quantities. One is a full year of collections, one is eleven months, one is a budget forecast, and one is the statutory rate. Charting them side by side would invite exactly the comparison that misreports this tax.",
     takeaway:

@@ -191,8 +191,8 @@ export default function Forest({
                 textAnchor={L.stack ? "start" : "end"}
                 className="fill-neutral-900 dark:fill-neutral-100 text-[13px] font-medium"
               >
-                {shortName(r.study)}
-                {L.stack ? ` ${year(r.study)}` : ""}
+                {r.label ?? shortName(r.study)}
+                {L.stack && !r.label ? ` ${year(r.study)}` : ""}
               </text>
               {!L.stack && (
                 <text
@@ -201,8 +201,8 @@ export default function Forest({
                   textAnchor="end"
                   className="fill-neutral-500 dark:fill-neutral-400 text-[11px]"
                 >
-                  {year(r.study)}
-                  {r.industry_funded ? " · industry funded" : ""}
+                  {r.label ? "" : year(r.study)}
+                  {r.industry_funded ? (r.label ? "industry funded" : " · industry funded") : ""}
                 </text>
               )}
               {L.stack && r.industry_funded && (

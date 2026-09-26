@@ -13,7 +13,8 @@
     "industry_funded": false,
     "note": "109 supermarkets, 45 mass merchandisers, 350 pharmacies. 2016 vs 2018.",
     "quote": "Difference-in-differences analyses found that after tax implementation, taxed beverage prices in Philadelphia increased by 1.02 cents per ounce (95% CI=0.94, 1.11; 68% pass through), and taxed beverage volume sales in stores decreased by 50% (95% CI=36%, 61%).",
-    "estimate_kind": "reported"
+    "estimate_kind": "reported",
+    "label": "Petimar 2022, prices"
   },
   {
     "id": "hua-2023-passthrough",
@@ -61,7 +62,8 @@
     "industry_funded": false,
     "note": "NO published interval. Different method family: marketing and economics, Philadelphia vs surrounding area.",
     "quote": "The tax is passed through at an average rate of 97%, leading to a 34% price increase.",
-    "estimate_kind": "reported"
+    "estimate_kind": "reported",
+    "label": "Seiler 2021, pass-through"
   },
   {
     "id": "roberto-2019-net",
@@ -76,7 +78,8 @@
     "industry_funded": false,
     "note": "Printed in the paper, not inferred. Border ZIPs measured directly.",
     "quote": "Approximately one-quarter, however, of the decrease in taxed beverage sales volume was offset by increases in volume of sales in bordering areas, indicating an overall reduction of 38%",
-    "estimate_kind": "reported"
+    "estimate_kind": "reported",
+    "label": "Roberto 2019, net of border"
   },
   {
     "id": "petimar-2022-net",
@@ -91,7 +94,8 @@
     "industry_funded": false,
     "note": "In 2018, meaning year two. Not a two-year average.",
     "quote": "After accounting for cross-border shopping, taxed beverage volume sales decreased in Philadelphia by 35% in 2018.",
-    "estimate_kind": "reported"
+    "estimate_kind": "reported",
+    "label": "Petimar 2022, net volume"
   },
   {
     "id": "seiler-2021-net",
@@ -106,7 +110,8 @@
     "industry_funded": false,
     "note": "Excludes control stores within 6 miles of the border. That choice is why this number is the lowest.",
     "quote": "Cross-shopping to stores outside of Philadelphia offsets more than half of the reduction in sales in the city and decreases the net reduction in sales of taxed beverages to only 22%.",
-    "estimate_kind": "reported"
+    "estimate_kind": "reported",
+    "label": "Seiler 2021, net volume"
   },
   {
     "id": "roberto-2019-volume-city",
@@ -121,7 +126,8 @@
     "industry_funded": false,
     "note": "Chain retail in city.",
     "quote": "Total volume sales of taxed beverages in Philadelphia decreased by 1.3 billion ounces (from 2.475 billion to 1.214 billion) or by 51.0% after tax implementation.",
-    "estimate_kind": "reported"
+    "estimate_kind": "reported",
+    "label": "Roberto 2019, in city"
   },
   {
     "id": "roberto-2019-border-offset",
@@ -136,7 +142,8 @@
     "industry_funded": false,
     "note": "Pennsylvania border ZIP codes, plus 308.2 million ounces.",
     "quote": "Volume sales in the Pennsylvania border zip codes, however, increased by 308.2 million ounces (from 713.1 million to 1.021 billion), offsetting the decrease in Philadelphia's volume sales by 24.4%.",
-    "estimate_kind": "reported"
+    "estimate_kind": "reported",
+    "label": "Roberto 2019, border offset"
   },
   {
     "id": "marinello-2021-employment",
@@ -196,7 +203,8 @@
     "industry_funded": false,
     "note": "Before accruals. With accruals the same report reads 68,160,317.",
     "quote": "TOTAL PHILADELPHIA BEVERAGE TAX 71,172,000 65,749,000 5,591,396 5,593,212 68,338,441 69,640,784 (178,124) (64,646) 68,160,317 69,576,138 (1,415,821) (2,411,317) 103.67%",
-    "estimate_kind": "official_record"
+    "estimate_kind": "official_record",
+    "label": "FY2025 collections"
   },
   {
     "id": "phila-code-rate",
@@ -211,7 +219,8 @@
     "industry_funded": false,
     "note": "Applies to artificially sweetened beverages too, per 19-4101(3)(a)(.2).",
     "quote": "(2) The tax authorized by this Section shall be assessed at the following rates: (a) For sugar-sweetened beverages under \u00a7 19-4101(3)(a), one and one-half cents ($.015) per fluid ounce.",
-    "estimate_kind": "statute"
+    "estimate_kind": "statute",
+    "label": "statutory rate"
   },
   {
     "id": "phila-fy2026-ytd-11mo",
@@ -226,7 +235,8 @@
     "industry_funded": false,
     "estimate_kind": "official_record",
     "note": "NOT comparable to a full fiscal year. FY2026 final is not published.",
-    "quote": "TOTAL PHILADELPHIA BEVERAGE TAX 68,338,441 64,434,000 70,955,000 5,830,842 5,529,206 64,593,145 62,747,045 1,846,100 6,361,855 91.03%"
+    "quote": "TOTAL PHILADELPHIA BEVERAGE TAX 68,338,441 64,434,000 70,955,000 5,830,842 5,529,206 64,593,145 62,747,045 1,846,100 6,361,855 91.03%",
+    "label": "FY2026, eleven months only"
   },
   {
     "id": "phila-fy2026-revised-estimate",
@@ -241,6 +251,134 @@
     "industry_funded": false,
     "estimate_kind": "budget_estimate",
     "note": "A forecast the city published, not money collected. Adopted estimate was 64,434,000.",
-    "quote": "TOTAL PHILADELPHIA BEVERAGE TAX 68,338,441 64,434,000 70,955,000 5,830,842 5,529,206 64,593,145 62,747,045 1,846,100 6,361,855 91.03%"
+    "quote": "TOTAL PHILADELPHIA BEVERAGE TAX 68,338,441 64,434,000 70,955,000 5,830,842 5,529,206 64,593,145 62,747,045 1,846,100 6,361,855 91.03%",
+    "label": "FY2026 budget forecast"
+  },
+  {
+    "id": "petimar-2024-adult-bmi-panel",
+    "outcome": "health",
+    "estimate": -0.32,
+    "ci_low": -0.85,
+    "ci_high": 0.2,
+    "units": "kg/m2 change at 3 years",
+    "study": "Petimar et al., Lancet Reg Health Am 2024;39:100906",
+    "doi": "10.1016/j.lana.2024.100906",
+    "funder": "NIDDK R01DK123624",
+    "industry_funded": false,
+    "estimate_kind": "reported",
+    "quote": "After implementation, in the panel sample, there was a -0.03 kg/m2 (95% CI: -0.07, 0.02) per quarter decrease in BMI vs. control, implying a -0.32 kg/m2 (-0.85, 0.20) change at the end of the 3-year study period. In the cross-sectional sample, there was a -0.05 kg/m2 (95% CI: -0.09, -0.01) per quarter decrease in BMI vs. control, implying a -0.60 kg/m2 (-1.04, -0.16) change at the end of the study period.",
+    "note": "PANEL sample, n=175,675. Same people followed over time. Interval crosses zero.",
+    "label": "Petimar 2024, panel"
+  },
+  {
+    "id": "petimar-2024-adult-bmi-cross",
+    "outcome": "health",
+    "estimate": -0.6,
+    "ci_low": -1.04,
+    "ci_high": -0.16,
+    "units": "kg/m2 change at 3 years",
+    "study": "Petimar et al., Lancet Reg Health Am 2024;39:100906",
+    "doi": "10.1016/j.lana.2024.100906",
+    "funder": "NIDDK R01DK123624",
+    "industry_funded": false,
+    "estimate_kind": "reported",
+    "quote": "After implementation, in the panel sample, there was a -0.03 kg/m2 (95% CI: -0.07, 0.02) per quarter decrease in BMI vs. control, implying a -0.32 kg/m2 (-0.85, 0.20) change at the end of the 3-year study period. In the cross-sectional sample, there was a -0.05 kg/m2 (95% CI: -0.09, -0.01) per quarter decrease in BMI vs. control, implying a -0.60 kg/m2 (-1.04, -0.16) change at the end of the study period.",
+    "note": "CROSS-SECTIONAL sample, n=587,121. Different people each period. Same paper as the row above. Interval excludes zero.",
+    "label": "Petimar 2024, cross-sectional"
+  },
+  {
+    "id": "gregory-2025-youth-zbmi",
+    "outcome": "health",
+    "estimate": -0.004,
+    "ci_low": -0.009,
+    "ci_high": 0.001,
+    "units": "zBMI change",
+    "study": "Gregory et al., JAMA Pediatr 2025;179(1):46-54",
+    "doi": "10.1001/jamapediatrics.2024.4782",
+    "funder": "NIDDK R01DK123624",
+    "industry_funded": false,
+    "estimate_kind": "reported",
+    "quote": "In panel analysis of 136 078 youth, the tax was associated with a difference in zBMI change of -0.004 (95% CI, -0.009 to 0.001) between Philadelphia and the control and a 1.02 odds ratio (95% CI, 0.97-1.08) of BMIs in the 95th percentile or higher.",
+    "note": "Youth panel, n=136,078, P=.13. zBMI is a standardised score, not kg/m2."
+  },
+  {
+    "id": "petimar-2023-dental-panel",
+    "outcome": "health",
+    "estimate": -0.02,
+    "ci_low": -0.08,
+    "ci_high": 0.03,
+    "units": "new DMFT, full-population panel",
+    "study": "Petimar et al., Am J Prev Med 2023;65(2):221-229",
+    "doi": "10.1016/j.amepre.2023.02.009",
+    "funder": "NIDDK R01DK123624",
+    "industry_funded": false,
+    "estimate_kind": "reported",
+    "quote": "DMFTnew did not change post-tax in Philadelphia in panel analyses of older children/adults (DD=-0.02, 95% CI: -0.08, 0.03) or in younger children (DD=0.07, 95% CI: -0.08, 0.23). There were similarly no post-tax changes in DMFSnew. However, in cross-sectional samples of patients on Medicaid, DMFTnew was lower post-tax in older children/adults (DD=-0.18, 95% CI: -0.34, -0.03; -22% decline) and younger children (DD=-0.22, 95% CI: -0.46, 0.01; -30% decline), with similar results for DMFSnew.",
+    "note": "Older children and adults, panel. Null.",
+    "label": "Petimar 2023, panel"
+  },
+  {
+    "id": "petimar-2023-dental-older",
+    "outcome": "health",
+    "estimate": -0.18,
+    "ci_low": -0.34,
+    "ci_high": -0.03,
+    "units": "new DMFT, Medicaid cross-sectional",
+    "study": "Petimar et al., Am J Prev Med 2023;65(2):221-229",
+    "doi": "10.1016/j.amepre.2023.02.009",
+    "funder": "NIDDK R01DK123624",
+    "industry_funded": false,
+    "estimate_kind": "reported",
+    "quote": "DMFTnew did not change post-tax in Philadelphia in panel analyses of older children/adults (DD=-0.02, 95% CI: -0.08, 0.03) or in younger children (DD=0.07, 95% CI: -0.08, 0.23). There were similarly no post-tax changes in DMFSnew. However, in cross-sectional samples of patients on Medicaid, DMFTnew was lower post-tax in older children/adults (DD=-0.18, 95% CI: -0.34, -0.03; -22% decline) and younger children (DD=-0.22, 95% CI: -0.46, 0.01; -30% decline), with similar results for DMFSnew.",
+    "note": "Older children and adults on Medicaid, cross-sectional. A 22% decline. Same paper as the panel row above, opposite conclusion.",
+    "label": "Petimar 2023, Medicaid cross-sectional"
+  },
+  {
+    "id": "phlprek-seats",
+    "outcome": "spending",
+    "estimate": 5250,
+    "ci_low": null,
+    "ci_high": null,
+    "units": "funded pre-K seats, 2025-26 school year",
+    "study": "City of Philadelphia, PHLpreK program page, phila.gov/programs/quality-pre-k/",
+    "doi": "",
+    "funder": "City of Philadelphia",
+    "industry_funded": false,
+    "estimate_kind": "official_record",
+    "quote": "PHLpreK is now offering 5,250 children free, quality pre-K during the 2025\u20132026 school year.",
+    "note": "Program page, not audited. Not refreshed for 2026-27.",
+    "label": "PHLpreK, funded seats"
+  },
+  {
+    "id": "phlprek-children",
+    "outcome": "spending",
+    "estimate": 17000,
+    "ci_low": null,
+    "ci_high": null,
+    "units": "children served since 2017, cumulative",
+    "study": "City of Philadelphia, PHLpreK program page, phila.gov/programs/quality-pre-k/",
+    "doi": "",
+    "funder": "City of Philadelphia",
+    "industry_funded": false,
+    "estimate_kind": "official_record",
+    "quote": "Since 2017, PHLpreK has served over 17,000 children.",
+    "note": "Cumulative and rounded. The city does not publish the counting method.",
+    "label": "PHLpreK, children served"
+  },
+  {
+    "id": "phlprek-providers",
+    "outcome": "spending",
+    "estimate": 220,
+    "ci_low": null,
+    "ci_high": null,
+    "units": "partner early childhood providers",
+    "study": "City of Philadelphia, PHLpreK program page, phila.gov/programs/quality-pre-k/",
+    "doi": "",
+    "funder": "City of Philadelphia",
+    "industry_funded": false,
+    "estimate_kind": "official_record",
+    "quote": "To achieve this, we partner with more than 220 early childhood education providers.",
+    "note": "Stated as 'more than 220'. A different section of the same page says 'locations', which is a different unit.",
+    "label": "PHLpreK, partner providers"
   }
 ]
