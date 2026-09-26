@@ -18,7 +18,11 @@ export const metadata: Metadata = {
     "What the published evidence actually says about Philadelphia policy. Every number traces to a paper. It refuses to answer when the literature does not.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html
       lang="en"

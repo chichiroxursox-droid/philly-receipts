@@ -132,3 +132,20 @@ If a checkpoint runs 90 minutes late, apply the next scope cut and log it.
 - Done-when result: 38 of 38 green, verify clean, deployed.
 - Next step: Ethan's. Domain, Gemini key, read the draft, submit before 10:00am Sunday.
 - Scope cuts applied so far: NONE.
+
+### Sat 2:05pm, Hour 4.1
+
+- Milestone: Substitution outcome added. 29 rows.
+- **The finding:** Lozano-Rojas used a household panel and found people bought more sugar from sweetened foods, cancelling about 19% of the sugar drop inside the city and 37% counting border counties. Petimar used store scanner data and reported no evidence of food substitution at all. Different data, so a disagreement rather than a contradiction. Wording follows the verified sheet's warning exactly.
+- The transcription guard decided what was admissible. Petimar's per-category food numbers (candy -4, sweet snacks -8, salty snacks -6) are in the paper's TABLE, but the quote I hold is the abstract's "mean 4%-8% decreases" range, which does not contain -6 at all. Rather than store a number its quote cannot support, Petimar enters as a `null_result` carrying its stated conclusion. Also refused to store Lozano-Rojas's DERIVED intervals as published ones.
+
+- What broke:
+  1. **Long labels overflowed the left gutter.** "Lozano-Rojas 2022, including border counties" is 42 characters in a gutter sized for "Petimar et al." The gutter is now measured from the longest label instead of guessed.
+  2. **"no interval published" ran off the right edge** when the dot sat far right. The tag now flips to the left of the dot past 55% of the plot width.
+  3. **iCloud is writing conflict files into the build directory.** `tsc` failed on `.next/types/cache-life.d 2.ts` and `routes.d 2.ts`, duplicate-identifier errors. This Desktop is iCloud-synced, which is WHY the demo video reaches the phone for free, but it also means iCloud drops "name 2.ts" copies into `.next`. 21 of them. Confined to build output, no source files and no node_modules touched. `npm run verify` now starts with `rm -rf .next`.
+  4. **That clean then exposed an ordering trap:** `LayoutProps` is a global Next generates into `.next/types`, so a cleaned tree could not typecheck before building. Typed the layout explicitly instead of reordering around it.
+  5. **I chained a deploy off a grep instead of off npm.** `npm run verify | grep ... && vercel deploy` chains on grep's exit code, so a failing verify still deployed. Now: run verify to a log, check `$?`, then deploy.
+
+- Proof the safety net is real: injected `const x: number = "not a number"` into a test file, verify exited 2 with the right error, reverted, verify exited 0. Not assumed, measured.
+- Done-when result: 38 of 38 green, verify exit 0 from a clean tree, six outcome tabs walked on prod with zero console errors.
+- Scope cuts applied so far: NONE.

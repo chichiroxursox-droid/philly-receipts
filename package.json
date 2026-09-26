@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test": "node --test lib/*.test.ts",
-    "verify": "tsc --noEmit -p tsconfig.json && node --test lib/*.test.ts && next build"
+    "verify": "rm -rf .next && tsc --noEmit -p tsconfig.json && node --test lib/*.test.ts && next build"
   },
   "dependencies": {
     "next": "16.3.6",

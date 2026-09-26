@@ -82,7 +82,14 @@ export default function Forest({
 }) {
   const narrow = useNarrow();
   const L = narrow ? NARROW : WIDE;
-  const { VBW, LEFT, RIGHT, ROW_H, TOP, AXIS_H } = L;
+  const { VBW, ROW_H, TOP, AXIS_H } = L;
+
+  // The left gutter has to fit the longest label, not a guess. "Lozano-Rojas
+  // 2022, including border counties" is 42 characters and overflowed a gutter
+  // sized for "Petimar et al."
+  const longest = rows.reduce((n, r) => Math.max(n, (r.label ?? shortName(r.study)).length), 0);
+  const LEFT = L.stack ? L.LEFT : Math.min(330, Math.max(L.LEFT, Math.round(longest * 6.6) + 22));
+  const RIGHT = L.stack ? L.RIGHT : VBW - 44;
 
   if (rows.length === 0) return null;
 
@@ -244,13 +251,21 @@ export default function Forest({
                 </g>
               ) : (
                 // No bar. Ever. The paper published no interval.
-                <text
-                  x={L.stack ? LEFT : x(r.estimate) + 14}
-                  y={L.stack ? cy + 20 : cy + 4}
-                  className="fill-neutral-400 dark:fill-neutral-500 text-[10.5px] italic"
-                >
-                  no interval published
-                </text>
+                // Flip to the left of the dot once it is far enough right that
+                // the tag would otherwise run off the edge of the viewBox.
+                (() => {
+                  const past = x(r.estimate) > LEFT + (RIGHT - LEFT) * 0.55;
+                  return (
+                    <text
+                      x={L.stack ? LEFT : past ? x(r.estimate) - 14 : x(r.estimate) + 14}
+                      y={L.stack ? cy + 20 : cy + 4}
+                      textAnchor={!L.stack && past ? "end" : "start"}
+                      className="fill-neutral-400 dark:fill-neutral-500 text-[10.5px] italic"
+                    >
+                      no interval published
+                    </text>
+                  );
+                })()
               )}
 
               <circle
