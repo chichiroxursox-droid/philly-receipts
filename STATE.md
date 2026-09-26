@@ -68,3 +68,24 @@ If a checkpoint runs 90 minutes late, apply the next scope cut and log it.
 
 - Next step: nothing blocking. Optional polish only. Remaining work is Ethan's: register the domain, AirDrop the mp4 to his phone, review the Devpost draft, submit.
 - Scope cuts applied so far: NONE.
+
+### Sat 12:35pm, Hour 2.6
+
+- Milestone: shipped the two things that were tested but never wired into the product, plus a corpus honesty fix I found by auditing my own Devpost draft.
+- Trigger: I had written "quote verification matches the stored sentence against the source" in the Devpost draft. Checked, and `quoteVerified` and `tippingPoint` existed in lib/band.ts with passing tests but were called from nowhere in the app. That claim would have been false in front of judges.
+
+- Shipped:
+  1. **Transcription guard.** Every displayed figure must literally appear in the sentence quoted beneath it, or the number is withheld and the row shows why. Runs over the whole corpus as a test.
+  2. **Tipping point.** The published range 0.94 to 2.38 straddles the 1.5 cent statutory rate, so the evidence cannot say whether shoppers paid more or less than the tax itself.
+  3. **Corpus 14 to 16 rows**, all tagged by what KIND of number they hold.
+
+- What broke, and it was my own verification code:
+  1. **The guard verified a wrong number.** `Math.round` made a fake 2.6 match Bleich, because the "3" it rounded to appears inside "2.38". A guard that says yes to a wrong number is worse than no guard. Numeric matches now require non-digit boundaries on both sides.
+  2. **Seiler stores 0.97 but prints "97%"**, so shares below 1 also try percent forms.
+  3. **The employment zero was not a finding.** Marinello reports no effect and publishes no point estimate. Storing 0 makes a null indistinguishable from a measured zero. Now tagged `null_result` and labelled as this app's encoding on screen.
+  4. **The revenue view called city records "papers"**, inherited from the employment copy. Each outcome now carries its own no-chart reason, with a test that one exists.
+  5. Two empty quotes on the city rows are now filled from the verified sheet, so all 16 rows pass the guard.
+
+- Done-when result: 35 of 35 tests green. Build clean. Deployed and verified on prod. Backup video re-recorded against prod, now 49.8s covering the tipping point, the verification badges and the revenue arithmetic.
+- Next step: nothing blocking. Remaining work is Ethan's: register the domain, AirDrop the mp4, review the Devpost draft, submit.
+- Scope cuts applied so far: NONE. The two "scope cut candidates" from the plan both shipped instead.

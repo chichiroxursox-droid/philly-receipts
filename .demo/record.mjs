@@ -40,31 +40,44 @@ await pause(1600);
 await page.locator("figure svg").scrollIntoViewIfNeeded();
 await pause(4200);
 
-// 3. Click a dot, open its source.
+// 3. The tipping point: a computation over the evidence, not from one paper.
+await page.locator('text=Where the conclusion flips').scrollIntoViewIfNeeded();
+await pause(4800);
+
+// 4. Click a dot, open its source, showing the transcription badge.
+
 await page.locator("figure svg g[role=button]").nth(2).click();
 await pause(1200);
 await page.locator("#src-bleich-2021-passthrough").scrollIntoViewIfNeeded();
 await pause(4000);
 
-// 4. Employment: the view that refuses to draw a chart.
+// 5. Employment: the view that refuses to draw a chart.
 await page.locator('nav[aria-label="Outcomes"] button:has-text("Employment")').scrollIntoViewIfNeeded();
 await pause(600);
 await page.click('nav[aria-label="Outcomes"] button:has-text("Employment")');
 await pause(4500);
 
-// 5. Jurisdiction refusal.
+// 6. Revenue: arithmetic with two cited inputs.
+await page.locator('nav[aria-label="Outcomes"] button:has-text("Revenue")').scrollIntoViewIfNeeded();
+await pause(400);
+await page.click('nav[aria-label="Outcomes"] button:has-text("Revenue")');
+await pause(1000);
+await page.locator('text=The arithmetic').scrollIntoViewIfNeeded();
+await pause(4200);
+
+// 7. Jurisdiction refusal.
 await page.locator('input[aria-label="Policy proposal"]').scrollIntoViewIfNeeded();
 await pause(500);
 await human(page, 'input[aria-label="Policy proposal"]', "Raise the Philly minimum wage to $20 an hour");
 await page.click('button:has-text("Show me")');
 await pause(4200);
 
-// 6. No-evidence refusal.
+// 8. No-evidence refusal.
 await human(page, 'input[aria-label="Policy proposal"]', "Build a monorail down Broad Street");
 await page.click('button:has-text("Show me")');
 await pause(4200);
 
-// 7. Land on the footer: how this works.
+// 9. Land on the footer: how this works.
 await page.locator("footer").scrollIntoViewIfNeeded();
 await pause(3500);
 
