@@ -99,3 +99,20 @@ If a checkpoint runs 90 minutes late, apply the next scope cut and log it.
 - LESSON worth keeping: "no overflow and no console errors" is not the same as "legible." Measure the rendered size of the smallest text.
 - Next step: nothing blocking. Remaining work is Ethan's.
 - Scope cuts applied so far: NONE.
+
+### Sat 1:20pm, Hour 3.3
+
+- Milestone: corpus 16 to 24 rows, and a new Health outcome that is now the strongest thing in the app.
+- **The finding:** two rows in the Health view are the SAME paper, same city, same three years. Petimar 2024's panel sample follows the same adults and its interval crosses zero. The cross-sectional sample takes different people each period and its interval does not. Petimar 2023's dental paper splits identically. So whether this tax improved health depends on how you build your sample, and the published work does not settle it.
+- **That forced a new signal.** Two intervals can OVERLAP each other while one contains zero and the other does not. GRADE calls those studies consistent, and they are, but consistency alone hides the disagreement anyone actually cares about. `crossesZero` is now shown per row.
+- Also added PHLpreK rows so the revenue tab can say where the money went.
+
+- What broke:
+  1. **Both plotted Health rows rendered as "Petimar et al. 2024"**, which destroys the entire point of that view. Rows now carry an optional plot label, guarded by a test that no two rows of one study can render identically. That test immediately found two more groups I had missed (Seiler, PHLpreK).
+  2. **A patch that did nothing and said nothing.** Adding `label?` to the Row type used an anchor reading "Scope caveat" when the file said "Scope/window caveat". Python's `str.replace` no-ops silently. `npm test` STILL PASSED, because Node strips TypeScript types without checking them, so only the Vercel build caught it. Every patch now asserts its anchor exists before and after.
+  3. **README claimed ten intervals; there are nine.** Counted from the corpus instead of from memory.
+
+- Process change: added `npm run verify` = tsc + tests + build. Run it before every deploy. `npm test` alone cannot catch a type error in this project.
+- Done-when result: 38 of 38 tests green, verify clean, deployed, all five tabs walked in a real browser on prod with zero console errors. Backup video re-recorded, 55.2s, now includes the Health beat.
+- Next step: nothing blocking. Remaining work is Ethan's.
+- Scope cuts applied so far: NONE.

@@ -59,6 +59,18 @@ itself. The published range runs 0.94 to 2.38, so it straddles that line and the
 evidence does not settle which happened. No paper reports this, because it is a
 statement about the set of papers rather than any one of them.
 
+**It shows when the method decides the answer.** Two rows in the health view are
+the same paper, the same city, the same three years. The panel sample follows the
+same adults over time and its interval crosses zero. The cross-sectional sample
+takes different people each period and its interval does not. The dental paper
+splits exactly the same way. Whether this tax improved health depends on how you
+build your sample, and the published work does not settle it.
+
+That needed a signal beyond consistency. Two intervals can overlap each other
+while one contains zero and the other does not, so "the studies agree" on its own
+hides the disagreement people actually care about. Every row with an interval says
+which side of zero it falls on.
+
 **It refuses on jurisdiction.** Ask it to raise the minimum wage and it will not
 model it, because Pennsylvania's Minimum Wage Act preempts municipalities from
 setting one. Ask about firearms and 18 Pa.C.S. § 6120 preempts that too.
@@ -68,8 +80,8 @@ attached. A model never decides preemption.
 
 ## The corpus
 
-16 rows across five outcomes: price pass-through, net volume, in-city volume,
-employment, and revenue. Four rows carry a published confidence interval. One is
+24 rows across seven outcomes: price pass-through, net volume, in-city volume,
+health, employment, revenue, and where the money went. 9 rows carry a published confidence interval. One is
 industry funded and labelled as such on screen.
 
 Every row stores the verbatim sentence its number came from. Rows are also tagged
@@ -109,7 +121,7 @@ installed.**
 
 ```
 lib/band.ts        band, GRADE consistency, tipping point, transcription guard, unit partition
-lib/band.test.ts   23 tests over that math, including a corpus-wide transcription check
+lib/band.test.ts   27 tests over that math, including a corpus-wide transcription check
 lib/corpus.ts      outcome config and the provenance guard
 lib/router.ts      the scope gate, rules layer
 lib/router.test.ts 11 tests over routing and refusals
@@ -121,7 +133,8 @@ app/api/route-proposal/  the one model call, optional
 
 ```bash
 npm install
-npm test        # 35 tests, no network
+npm test        # 38 tests, no network
+npm run verify  # typecheck + tests + production build
 npm run dev
 ```
 

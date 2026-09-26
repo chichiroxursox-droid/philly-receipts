@@ -57,6 +57,12 @@ await pause(600);
 await page.click('nav[aria-label="Outcomes"] button:has-text("Employment")');
 await pause(4500);
 
+// 5b. Health: the same paper reaching two different answers.
+await page.locator('nav[aria-label="Outcomes"] button:has-text("Health")').scrollIntoViewIfNeeded();
+await pause(400);
+await page.click('nav[aria-label="Outcomes"] button:has-text("Health")');
+await pause(5200);
+
 // 6. Revenue: arithmetic with two cited inputs.
 await page.locator('nav[aria-label="Outcomes"] button:has-text("Revenue")').scrollIntoViewIfNeeded();
 await pause(400);
