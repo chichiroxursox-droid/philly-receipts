@@ -216,3 +216,10 @@ Read this first tomorrow. The build is DONE. Do not add features.
 - "No overflow and no console errors" is NOT "legible". Measure rendered text size. The plot shipped 6.1px labels on a phone and every automated check passed.
 - Devpost 403s a plain fetch now. Needs a browser user agent.
 - Check every claim you write into the README or the Devpost copy. Two of mine were false when written: quote verification was not wired in, and the interval count was ten when it was nine.
+
+### Sat 3:50pm, Hour 5.8
+
+- Added `npm run preflight`. Ten checks in about fifteen seconds, exits non-zero on any failure: prod loads, prod still refuses an out-of-jurisdiction proposal, tests pass, typecheck clean, tree committed, everything pushed, repo PUBLIC per rules 12-13, no `.env` tracked, backup video present and not truncated, every corpus row carries a study and quote and funder.
+- It correctly failed on its own first run because its own files were uncommitted. Now all ten PASS.
+- This is the 9am Sunday command. SUBMIT.md opens with it.
+- Two small self-inflicted bugs while writing it: the heredoc wrote to `scripts/` before `mkdir -p`, so the file silently did not exist; and I left a stub `check()` plus a `results.length = 0` in the first draft. Rewrote clean.
