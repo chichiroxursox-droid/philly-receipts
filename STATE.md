@@ -53,3 +53,18 @@ If a checkpoint runs 90 minutes late, apply the next scope cut and log it.
 - Next step: README and Devpost draft, then the backup screen recording, then domain. The build is far enough ahead that polish and submission materials are now the critical path, not features.
 - Scope cuts applied so far: NONE. Nothing has been cut.
 - NEEDED FROM ETHAN: (1) add billing to TypeSafe if you want Jev in the demo, key is already in Vercel prod env and wired; (2) ANTHROPIC_API_KEY only if you want the Claude fallback, also optional. The product is complete without either.
+
+### Sat 12:05pm, Hour 2.1
+
+- Milestone: submission materials done. Feature work is finished; everything left is Ethan's to execute.
+- Done-when result: README committed. Devpost draft written to Operating Systems `references/temple-ai-lab/owlhacks/receipts/devpost-draft.md`, NOT posted, awaiting voice review. Backup demo recorded: 39s, 1.3MB H.264 mp4 at `~/Desktop/philly-receipts-demo.mp4`, verified frame by frame to contain all six demo beats.
+- Recording is reproducible: `node .demo/record.mjs [url]`. Video output gitignored. If the venue wifi dies Sunday, that file IS the demo.
+
+- What broke:
+  1. `.demo/record.mjs` wrote into a percent-encoded directory because `new URL(...).pathname` keeps `%20` and this repo lives under "CLAUDE CODE". Fixed with `fileURLToPath`. Also shadowed the global `URL` with a const named `URL`.
+  2. **Domain availability check was wrong the first time.** `rdap.nic.tech` returns an HTML page with HTTP 200 for every query, so "200 means registered" marked every .tech as taken. Caught it with a nonsense-domain control. Re-ran through the rdap.org redirector with two controls (nonsense = 404, google.com = 200) before trusting any result. LESSON: never read an availability or existence check without a positive AND negative control.
+
+- Domain, verified available as of 12:05pm Sat: **receipts.tech**, phillyreceipts.tech, showmethereceipts.tech, thereceipts.tech, phillyreceipts.com, phillyreceipts.org. `receipts.tech` is the pick. MLH normally hands out free .tech vouchers at the sponsor table.
+
+- Next step: nothing blocking. Optional polish only. Remaining work is Ethan's: register the domain, AirDrop the mp4 to his phone, review the Devpost draft, submit.
+- Scope cuts applied so far: NONE.
