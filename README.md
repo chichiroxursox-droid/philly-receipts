@@ -20,6 +20,38 @@ call in the product routes your question to an outcome. It returns a label, neve
 a quantity. If it routes wrong, you see the wrong chart and fix it with one
 click. It cannot invent a number.
 
+## Play the mayor
+
+The beverage tax is 1.5 cents per ounce. Change it.
+
+Double it to 3 cents and revenue does not double. It falls to **29.8% of the
+maximum the tax could raise**, because the base shrinks faster than the rate
+climbs. Revenue peaks at 1.63 cents, which is almost exactly where Philadelphia
+already sits.
+
+That is not this tool's arithmetic. Seiler, Tuchman and Yao published a Laffer
+curve for this tax, and every stop on the rate view is a sentence from their
+paper, quoted under the number:
+
+| Rate | Share of the maximum possible revenue |
+|---|---|
+| 1.0 cents | 85.0% |
+| **1.5 cents, the actual rate** | **99.3%** |
+| 1.63 cents | the peak. Taxed sales fall 24% |
+| 2.0 cents | 94.9% |
+| **3.0 cents, the rate first proposed** | **29.8%** |
+
+Those rows are labelled on screen as the authors' **counterfactuals**, not
+observations: real published numbers describing a world that did not happen,
+computed under assumptions the authors state. There is no rate between those
+stops, because nobody published one, so the tool shows nothing there.
+
+**What it will not do is compute a rate for you.** Only 9 of the 36 rows carry a
+published confidence interval, and none of the volume rows do. Volume is the
+outcome a mayor most wants to move, so a Monte Carlo over it would mean inventing
+the very intervals it sampled from. That is the failure this project exists to
+refuse, so the lever selects published evidence and never interpolates.
+
 ## Why this instead of a policy simulator
 
 Ask an LLM what doubling the soda tax would do and it will tell you, fluently,
@@ -85,10 +117,19 @@ Philadelphia has passed such ordinances and lost in court. A mayor cannot do the
 things, so there is nothing to simulate. This list is hand-written with statutes
 attached. A model never decides preemption.
 
+## What was left out
+
+The hardest question to answer about a corpus is not what is in it. It is what is
+not, and why. A spread computed over a sample the author chose is a spread the
+author chose, so the app carries its own methods section: the sampling frame, five
+deliberate exclusions with reasons, and four known gaps. It says plainly that this
+is a convenience sample rather than a systematic review.
+
 ## The corpus
 
-29 rows across eight outcomes: price pass-through, net volume, in-city volume,
-substitution, health, employment, revenue, and where the money went. 9 rows carry a published confidence interval. One is
+36 rows across nine outcomes: rate counterfactuals, price pass-through, net volume,
+in-city volume, substitution, health, employment, revenue, and where the money
+went. 9 rows carry a published confidence interval. One is
 industry funded and labelled as such on screen.
 
 Every row stores the verbatim sentence its number came from. Rows are also tagged
@@ -140,7 +181,7 @@ app/api/route-proposal/  the one model call, optional
 
 ```bash
 npm install
-npm test        # 39 tests, no network
+npm test        # 47 tests, no network
 npm run verify  # typecheck + tests + production build
 npm run dev
 ```
