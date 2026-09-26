@@ -171,3 +171,12 @@ If a checkpoint runs 90 minutes late, apply the next scope cut and log it.
 - Done-when result: 45 of 45 green, verify exit 0 from a clean tree.
 - Worth saying to a judge: "I broke it on purpose to show you it fails closed."
 - Scope cuts applied so far: NONE.
+
+### Sat 3:10pm, Hour 5.3
+
+- Milestone: accessibility and performance audited on prod. No code changes needed.
+- **Performance:** 356ms wall load, 97ms TTFB, 291ms DOMContentLoaded, 212KB over 10 requests. Fast enough for venue wifi with a judge watching.
+- **Accessibility:** `html lang` set. Zero interactive elements without an accessible name. Zero images missing alt, zero SVGs missing aria-label. Heading order is clean H1 to H2 to H3. Focus outline is visible.
+- **Keyboard:** the forest plot dots are genuinely reachable. Twelve tabs lands on "Petimar et al., 1.02 cents/oz" and Enter selects its source row. That was built on the first pass and is now verified working rather than assumed.
+- **One finding, not fixed on purpose:** six tap targets are under 24 CSS px tall. All six are inline links inside running text, DOIs and "Source on GitHub" and the inline Cited figures. WCAG 2.2's target-size rule carries an explicit exception for links inline in a sentence, so these pass. Adding padding would risk a visual regression at hour 5 for a non-issue. Documented rather than churned.
+- Scope cuts applied so far: NONE.
