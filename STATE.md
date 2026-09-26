@@ -160,3 +160,14 @@ If a checkpoint runs 90 minutes late, apply the next scope cut and log it.
 - Done-when result: verify exit 0 from a clean tree, 39 of 39 tests, deployed, 36 view combinations clean.
 - Next step: Ethan's, and nothing in the build is blocking.
 - Scope cuts applied so far: NONE.
+
+### Sat 2:55pm, Hour 5.0
+
+- Milestone: proved the provenance guard rather than claiming it. 45 tests.
+- The README and the Devpost copy both say an unsourced number cannot render. That is a claim about BEHAVIOUR, so I tested it instead of trusting the code read.
+- **Method:** deliberately replaced a real corpus id with `TYPO-not-in-corpus` on the revenue panel, ran a full production build, loaded it in a real browser.
+- **Result:** page renders "This page couldn't load", one page error, reading exactly `Unsourced number: no corpus row "TYPO-not-in-corpus". Every displayed figure must trace to lib/corpus.json.` The figure 68,338,441 did NOT appear anywhere. Reverted, verify exit 0.
+- New `lib/provenance.test.ts` also asserts: every corpus id passes, every id hard-coded in page.tsx exists (a rename would otherwise crash at runtime), ids are unique, nothing is currently in the withheld state, and every row has a study, a quote and a funder.
+- Done-when result: 45 of 45 green, verify exit 0 from a clean tree.
+- Worth saying to a judge: "I broke it on purpose to show you it fails closed."
+- Scope cuts applied so far: NONE.
