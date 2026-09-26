@@ -25,6 +25,29 @@ export function hasInterval(r: Row): boolean {
   return r.ci_low !== null && r.ci_high !== null && r.ci_low <= r.ci_high;
 }
 
+export type UnitPartition = {
+  /** Rows sharing the canonical unit. These are the only rows that may share an axis. */
+  plotted: Row[];
+  /** Rows measured on some other scale. Shown, never plotted alongside. */
+  otherScale: Row[];
+};
+
+/**
+ * Split rows by unit before anything is drawn.
+ *
+ * Putting two different units on one axis silently asserts the studies measured
+ * the same quantity. Seiler's "97% of the tax" and Petimar's "1.02 cents per
+ * ounce" are not the same number and must never share a scale. Employment is
+ * worse: three papers, three units, no shared axis exists at all.
+ */
+export function partitionByUnits(rows: Row[], units: string | null): UnitPartition {
+  if (units === null) return { plotted: [], otherScale: rows };
+  return {
+    plotted: rows.filter((r) => r.units === units),
+    otherScale: rows.filter((r) => r.units !== units),
+  };
+}
+
 export type Band = {
   low: number;
   high: number;

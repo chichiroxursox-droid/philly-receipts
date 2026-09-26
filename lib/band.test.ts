@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import corpusJson from "./corpus.json" with { type: "json" };
 import {
   band,
   consistency,
@@ -9,8 +10,11 @@ import {
   quoteVerified,
   taxedOunces,
   hasInterval,
+  partitionByUnits,
   type Row,
 } from "./band.ts";
+
+const corpus = corpusJson as Row[];
 
 const r = (o: Partial<Row> & { id: string; estimate: number }): Row => ({
   outcome: "price_pass_through",
@@ -140,4 +144,28 @@ test("quoteVerified survives thin spaces in the source", () => {
     "Mean prices of taxed beverages (n = 2\u2009094\u2009220) increased by 1.6 (95% CI, 1.3\u20132.0) cents/oz (106.7% pass-through)";
   assert.equal(quoteVerified("n = 2 094 220", source), true);
   assert.equal(quoteVerified("1.3-2.0", source), true);
+});
+
+test("partitionByUnits keeps a different-unit row off the shared axis", () => {
+  const rows = corpus.filter((r) => r.outcome === "price_pass_through");
+  const { plotted, otherScale } = partitionByUnits(rows, "cents/oz");
+  assert.equal(plotted.length, 3);
+  assert.equal(otherScale.length, 1);
+  assert.equal(otherScale[0].id, "seiler-2021-passthrough");
+  // Seiler's 0.97 is a SHARE of the tax. On a cents-per-ounce axis it would land
+  // right next to Petimar's 1.02 and read as agreement. It is not agreement.
+  assert.ok(plotted.every((r) => r.units === "cents/oz"));
+});
+
+test("partitionByUnits with a null canonical unit plots nothing", () => {
+  const rows = corpus.filter((r) => r.outcome === "employment");
+  const { plotted, otherScale } = partitionByUnits(rows, null);
+  assert.equal(plotted.length, 0);
+  assert.equal(otherScale.length, 3);
+});
+
+test("employment rows share no common unit, so no axis is possible", () => {
+  const rows = corpus.filter((r) => r.outcome === "employment");
+  const units = new Set(rows.map((r) => r.units));
+  assert.equal(units.size, rows.length);
 });
