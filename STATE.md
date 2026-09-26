@@ -89,3 +89,13 @@ If a checkpoint runs 90 minutes late, apply the next scope cut and log it.
 - Done-when result: 35 of 35 tests green. Build clean. Deployed and verified on prod. Backup video re-recorded against prod, now 49.8s covering the tipping point, the verification badges and the revenue arithmetic.
 - Next step: nothing blocking. Remaining work is Ethan's: register the domain, AirDrop the mp4, review the Devpost draft, submit.
 - Scope cuts applied so far: NONE. The two "scope cut candidates" from the plan both shipped instead.
+
+### Sat 1:00pm, Hour 3.0
+
+- Milestone: responsive fix. Found by testing rather than by looking.
+- **The bug:** SVG text scales with the viewBox. A 760-wide viewBox squeezed into a 350px phone rendered the 13px study labels at **6.1px**, which is unreadable. The page had no horizontal overflow and zero console errors, so every automated check passed while the chart was useless on a phone. Measured the rendered text height instead of trusting "it fits."
+- **The fix:** two layouts. Below 640px the viewBox narrows to 392 and the study name moves above its own interval instead of sitting in a left gutter. Labels now render at 11.1px on iPhone, 12.2 on iPad, 14 on desktop. Verified on prod at all three widths: no page overflow, no text past the SVG edge, zero errors.
+- Done-when result: 35 of 35 tests green, build clean, deployed, verified on three viewports in both colour schemes.
+- LESSON worth keeping: "no overflow and no console errors" is not the same as "legible." Measure the rendered size of the smallest text.
+- Next step: nothing blocking. Remaining work is Ethan's.
+- Scope cuts applied so far: NONE.

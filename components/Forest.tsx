@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { hasInterval, type Band, type Consistency, type Row } from "@/lib/band.ts";
 
 /**
@@ -12,11 +13,24 @@ import { hasInterval, type Band, type Consistency, type Row } from "@/lib/band.t
  * product exists to expose.
  */
 
-const LEFT = 232;
-const RIGHT = 716;
-const ROW_H = 46;
-const TOP = 34;
-const AXIS_H = 56;
+// Two layouts. SVG text scales with the viewBox, so a 760-wide viewBox squeezed
+// into a 350px phone renders 13px labels at 6px, which is unreadable. On narrow
+// screens the viewBox narrows and the study name moves above its interval.
+const WIDE = { VBW: 760, LEFT: 232, RIGHT: 716, ROW_H: 46, TOP: 34, AXIS_H: 56, stack: false };
+const NARROW = { VBW: 392, LEFT: 12, RIGHT: 380, ROW_H: 62, TOP: 30, AXIS_H: 52, stack: true };
+
+/** True below the Tailwind sm breakpoint. */
+function useNarrow(): boolean {
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const on = () => setNarrow(mq.matches);
+    on();
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  return narrow;
+}
 
 /** "Petimar et al., Am J Prev Med 2022;62(6):921-929" -> "Petimar et al." */
 function shortName(study: string): string {
@@ -66,6 +80,10 @@ export default function Forest({
   selectedId: string | null;
   onSelect: (id: string) => void;
 }) {
+  const narrow = useNarrow();
+  const L = narrow ? NARROW : WIDE;
+  const { VBW, LEFT, RIGHT, ROW_H, TOP, AXIS_H } = L;
+
   if (rows.length === 0) return null;
 
   // Domain covers every point estimate and every PUBLISHED bound. Nothing imputed.
@@ -97,7 +115,7 @@ export default function Forest({
   return (
     <figure className="w-full">
       <svg
-        viewBox={`0 0 760 ${height}`}
+        viewBox={`0 0 ${VBW} ${height}`}
         className="w-full h-auto overflow-visible"
         role="img"
         aria-label={`Published estimates, ${unitLabel}. ${rows.length} studies.`}
@@ -113,7 +131,7 @@ export default function Forest({
               className="fill-amber-200/35 dark:fill-amber-400/15"
             />
             <text
-              x={(x(band.low) + x(band.high)) / 2}
+              x={Math.min(Math.max((x(band.low) + x(band.high)) / 2, 70), VBW - 70)}
               y={TOP - 20}
               textAnchor="middle"
               className="fill-amber-800 dark:fill-amber-300 text-[11px] font-medium"
@@ -158,7 +176,7 @@ export default function Forest({
               <rect
                 x={0}
                 y={cy - ROW_H / 2}
-                width={760}
+                width={VBW}
                 height={ROW_H}
                 className={
                   isSel
@@ -168,22 +186,34 @@ export default function Forest({
               />
 
               <text
-                x={LEFT - 14}
-                y={cy - 2}
-                textAnchor="end"
+                x={L.stack ? LEFT : LEFT - 14}
+                y={L.stack ? cy - 17 : cy - 2}
+                textAnchor={L.stack ? "start" : "end"}
                 className="fill-neutral-900 dark:fill-neutral-100 text-[13px] font-medium"
               >
                 {shortName(r.study)}
+                {L.stack ? ` ${year(r.study)}` : ""}
               </text>
-              <text
-                x={LEFT - 14}
-                y={cy + 13}
-                textAnchor="end"
-                className="fill-neutral-500 dark:fill-neutral-400 text-[11px]"
-              >
-                {year(r.study)}
-                {r.industry_funded ? " · industry funded" : ""}
-              </text>
+              {!L.stack && (
+                <text
+                  x={LEFT - 14}
+                  y={cy + 13}
+                  textAnchor="end"
+                  className="fill-neutral-500 dark:fill-neutral-400 text-[11px]"
+                >
+                  {year(r.study)}
+                  {r.industry_funded ? " · industry funded" : ""}
+                </text>
+              )}
+              {L.stack && r.industry_funded && (
+                <text
+                  x={LEFT}
+                  y={cy + 22}
+                  className="fill-orange-600 dark:fill-orange-400 text-[11px]"
+                >
+                  industry funded
+                </text>
+              )}
 
               {withCI ? (
                 <g>
@@ -215,8 +245,8 @@ export default function Forest({
               ) : (
                 // No bar. Ever. The paper published no interval.
                 <text
-                  x={x(r.estimate) + 14}
-                  y={cy + 4}
+                  x={L.stack ? LEFT : x(r.estimate) + 14}
+                  y={L.stack ? cy + 20 : cy + 4}
                   className="fill-neutral-400 dark:fill-neutral-500 text-[10.5px] italic"
                 >
                   no interval published
