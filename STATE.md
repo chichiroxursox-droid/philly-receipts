@@ -7,9 +7,9 @@ If a checkpoint runs 90 minutes late, apply the next scope cut and log it.
 |---|---|---|---|
 | Sat 11:00am | 1 | Repo live, deployed to prod once, real URL returns 200 | DONE 10:50 |
 | Sat 1:00pm | 3 | Band math works in isolation with a passing test | DONE EARLY |
-| Sat 3:00pm | 5 | Corpus typed, forest plot renders from it | |
-| **Sat 6:00pm** | **8** | **GATE: a judge could use it end to end on the prod URL** | |
-| Sat 8:00pm | 10 | Scope router and all three refusal states work. No new deps after this | |
+| Sat 3:00pm | 5 | Corpus typed, forest plot renders from it | DONE 11:35, 3.5h early |
+| **Sat 6:00pm** | **8** | **GATE: a judge could use it end to end on the prod URL** | **HIT 11:35** |
+| Sat 8:00pm | 10 | Scope router and all three refusal states work. No new deps after this | DONE 11:35, zero new deps |
 | Sat 10:00pm | 12 | Backup screen recording saved to phone. Tagged v0-demo | |
 | Sun 12:30am | 14.5 | README and Devpost draft done | |
 | Sun 4:30am | 18.5 | Awake, fresh eyes on the demo path only | |
@@ -35,3 +35,21 @@ If a checkpoint runs 90 minutes late, apply the next scope cut and log it.
 - Next step: components/Forest.tsx inline SVG, then wire app/page.tsx to the corpus. Target: forest plot rendering by 1:00pm.
 - Scope cuts applied so far: none. Running ahead.
 - NEEDED FROM ETHAN: ANTHROPIC_API_KEY in .env.local before the scope router (hour 8-10). Not blocking yet.
+
+### Sat 11:35am, Hour 1.6
+
+- Milestone: HIT, and the hour-8 gate is cleared six and a half hours early. A judge can use the prod URL end to end right now.
+- Done-when result: https://philly-receipts.vercel.app serves the real app. Verified in a real browser on a production build, zero console errors. All three verdict states work on prod. 29 of 29 tests green. `npx next build` clean. Zero new dependencies.
+- Public repo created and pushed: github.com/chichiroxursox-droid/philly-receipts. Rules 12-13 satisfied. First commit stamped 2026-09-26 10:18:00 EDT, which is the Rule 6 receipt.
+
+- What broke, and what it taught:
+  1. **Jev key returns 401.** Bearer is the right scheme, proven by contrast: every other header shape returns 403 "Must supply an API key" while Bearer returns 401 "check your API key". `/health` is 200. So the service is up and the request is well formed; the key itself is rejected, almost certainly unbilled. NOT blocking, because the router was built rules-first.
+  2. **`next dev` silently overwrote CLAUDE.md** with a one-line `@AGENTS.md` pointer, deleting the governing rules. Restored from the bell-time source and committed. Watch for this after any `next dev` run.
+  3. **Node ESM needs explicit `.ts` extensions, Next's typecheck rejected them.** Fixed properly with `allowImportingTsExtensions`, which also let the test files back under the typechecker instead of staying excluded.
+  4. **Two real routing bugs the tests caught, not me.** "Ban assault weapons" missed because the regex said `assault weapon` with a trailing `\b`. And "Did the beverage tax cost jobs?" routed to PRICES, because the subject term "beverage tax" outvoted the only outcome word in the sentence. Fixed by splitting SUBJECT terms from OUTCOME terms and treating a tie as ambiguous rather than letting list order decide.
+
+- Design decision worth defending to a judge: **the forest plot refuses to share an axis between rows that do not share a unit.** Seiler reports 0.97 as a SHARE of the tax; on a cents-per-ounce axis it lands beside Petimar's 1.02 and reads as agreement. It is not agreement. Employment is worse: three papers, three units, so that view draws no chart at all and says why. `partitionByUnits` in lib/band.ts, three tests.
+
+- Next step: README and Devpost draft, then the backup screen recording, then domain. The build is far enough ahead that polish and submission materials are now the critical path, not features.
+- Scope cuts applied so far: NONE. Nothing has been cut.
+- NEEDED FROM ETHAN: (1) add billing to TypeSafe if you want Jev in the demo, key is already in Vercel prod env and wired; (2) ANTHROPIC_API_KEY only if you want the Claude fallback, also optional. The product is complete without either.
