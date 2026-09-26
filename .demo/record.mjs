@@ -57,6 +57,12 @@ await pause(600);
 await page.click('nav[aria-label="Outcomes"] button:has-text("Employment")');
 await pause(4500);
 
+// 5a. Substitution: two teams, two data sources, two answers.
+await page.locator('nav[aria-label="Outcomes"] button:has-text("Substitution")').scrollIntoViewIfNeeded();
+await pause(400);
+await page.click('nav[aria-label="Outcomes"] button:has-text("Substitution")');
+await pause(4600);
+
 // 5b. Health: the same paper reaching two different answers.
 await page.locator('nav[aria-label="Outcomes"] button:has-text("Health")').scrollIntoViewIfNeeded();
 await pause(400);

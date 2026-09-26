@@ -149,3 +149,14 @@ If a checkpoint runs 90 minutes late, apply the next scope cut and log it.
 - Proof the safety net is real: injected `const x: number = "not a number"` into a test file, verify exited 2 with the right error, reverted, verify exited 0. Not assumed, measured.
 - Done-when result: 38 of 38 green, verify exit 0 from a clean tree, six outcome tabs walked on prod with zero console errors.
 - Scope cuts applied so far: NONE.
+
+### Sat 2:35pm, Hour 4.6
+
+- Milestone: clean across every viewport and colour scheme. 29 rows, eight outcomes, 39 tests.
+- **Verified sweep:** 3 viewports x 2 colour schemes x 6 tabs = 36 view combinations. Zero overflowing text, zero horizontal page scroll, zero console errors.
+- What broke: the substitution axis label was 76 characters and ran off both edges of the 392-unit phone viewBox. Volume sold was 70 and had the same defect, which I only found because the new test checks EVERY outcome rather than the one I happened to be looking at. Both shortened, invariant now enforced at 48 characters.
+- Also: a patch silently did not apply because I guarded it with `node -e "require('./lib/corpus.ts')" || python3 ...`, and Node 24 strips types so the require SUCCEEDED and the `||` short-circuited. The test caught the unapplied change. Stop using `||` as a patch guard.
+- Backup video re-recorded, 60.8s, now covering all six tabs including substitution.
+- Done-when result: verify exit 0 from a clean tree, 39 of 39 tests, deployed, 36 view combinations clean.
+- Next step: Ethan's, and nothing in the build is blocking.
+- Scope cuts applied so far: NONE.

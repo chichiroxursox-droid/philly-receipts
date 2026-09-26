@@ -59,6 +59,13 @@ itself. The published range runs 0.94 to 2.38, so it straddles that line and the
 evidence does not settle which happened. No paper reports this, because it is a
 statement about the set of papers rather than any one of them.
 
+**It shows two teams disagreeing without either being wrong.** Lozano-Rojas used
+a household panel and found people bought more sugar from sweetened foods, enough
+to cancel about a fifth of the sugar drop inside the city. Petimar used store
+scanner data and reported no evidence of food substitution at all. Different data,
+so the app calls that a disagreement rather than a contradiction, which is what
+the papers actually support.
+
 **It shows when the method decides the answer.** Two rows in the health view are
 the same paper, the same city, the same three years. The panel sample follows the
 same adults over time and its interval crosses zero. The cross-sectional sample
@@ -80,8 +87,8 @@ attached. A model never decides preemption.
 
 ## The corpus
 
-24 rows across seven outcomes: price pass-through, net volume, in-city volume,
-health, employment, revenue, and where the money went. 9 rows carry a published confidence interval. One is
+29 rows across eight outcomes: price pass-through, net volume, in-city volume,
+substitution, health, employment, revenue, and where the money went. 9 rows carry a published confidence interval. One is
 industry funded and labelled as such on screen.
 
 Every row stores the verbatim sentence its number came from. Rows are also tagged
@@ -133,7 +140,7 @@ app/api/route-proposal/  the one model call, optional
 
 ```bash
 npm install
-npm test        # 38 tests, no network
+npm test        # 39 tests, no network
 npm run verify  # typecheck + tests + production build
 npm run dev
 ```
