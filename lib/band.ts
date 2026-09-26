@@ -22,13 +22,25 @@ export type Row = {
    * encoding of a paper that reported no effect. Treating that 0 as a
    * published point estimate would be the most dishonest thing in the corpus.
    */
-  estimate_kind?: "reported" | "null_result" | "statute" | "official_record" | "budget_estimate";
+  estimate_kind?:
+    | "reported"
+    | "authors_counterfactual"
+    | "null_result"
+    | "statute"
+    | "official_record"
+    | "budget_estimate";
   /**
    * Short label for the plot when the citation alone is ambiguous. Two rows in
    * the health view are the SAME paper and differ only by sample construction,
    * so rendering "Petimar et al. 2024" twice tells the reader nothing.
    */
   label?: string;
+  /**
+   * The tax rate this row describes, in cents per fluid ounce. Set only on rows
+   * that state an outcome AT a specific rate. It is what the rate rail snaps to,
+   * and rows without it are not counterfactuals.
+   */
+  dose_cents_per_oz?: number;
   /** Scope/window caveat shown next to the row. */
   note?: string;
 };
@@ -218,7 +230,7 @@ export function quoteVerified(quote: string, sourceText: string): boolean {
 export type QuoteCheck = {
   /** Safe to display the number. */
   ok: boolean;
-  kind: "verified" | "null_result" | "budget_estimate" | "unverified";
+  kind: "verified" | "authors_counterfactual" | "null_result" | "budget_estimate" | "unverified";
   detail: string;
 };
 
@@ -283,6 +295,18 @@ export function checkQuote(r: Row): QuoteCheck {
       kind: "null_result",
       detail:
         "This paper reports no effect and publishes no point estimate. The zero is this app's encoding of a null result, not a number the authors printed.",
+    };
+  }
+  if (r.estimate_kind === "authors_counterfactual") {
+    // The number is real and published, but it describes a world that did not
+    // happen. It is the authors' model output under assumptions they state, not
+    // something anyone measured. Saying "verified" here would be true about the
+    // transcription and misleading about the epistemics.
+    return {
+      ok: estimateInQuote(r),
+      kind: "authors_counterfactual",
+      detail:
+        "Published by the authors, but a counterfactual: a rate nobody levied, computed under assumptions they state. Not an observation.",
     };
   }
   if (r.estimate_kind === "budget_estimate") {

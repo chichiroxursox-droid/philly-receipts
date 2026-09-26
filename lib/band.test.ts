@@ -239,3 +239,15 @@ test("rows sharing a study carry distinct plot labels", () => {
     );
   }
 });
+
+test("counterfactual rows are labelled as model output, not observation", () => {
+  const cf = corpus.filter((r) => r.estimate_kind === "authors_counterfactual");
+  assert.ok(cf.length >= 6, `expected the Laffer rows to be tagged, found ${cf.length}`);
+  for (const r of cf) {
+    const c = checkQuote(r);
+    assert.equal(c.kind, "authors_counterfactual");
+    assert.match(c.detail, /Not an observation/);
+    // still has to pass transcription
+    assert.equal(estimateInQuote(r), true, `${r.id} number not in its quote`);
+  }
+});

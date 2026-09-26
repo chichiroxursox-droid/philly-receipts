@@ -4,6 +4,7 @@ import { band, consistency, partitionByUnits, type Row } from "./band.ts";
 export const CORPUS = corpusJson as Row[];
 
 export type OutcomeId =
+  | "rate_counterfactual"
   | "price_pass_through"
   | "volume_net"
   | "health"
@@ -31,6 +32,15 @@ export type Outcome = {
 };
 
 export const OUTCOMES: Outcome[] = [
+  {
+    id: "rate_counterfactual",
+    question: "You are the mayor. What if you changed the rate?",
+    short: "Change the rate",
+    plotUnits: "percent of the maximum possible tax revenue",
+    axisLabel: "percent of the maximum possible revenue",
+    takeaway:
+      "Double the tax from 1.5 to 3 cents and revenue does not double. It falls to under a third of what the tax could raise, because the base shrinks faster than the rate climbs. Revenue peaks at 1.63 cents, which is almost exactly where Philadelphia already sits. That is not this tool's arithmetic. It is a sentence the authors published, and it is quoted under every number here. Note what they also published: these are counterfactuals computed assuming constant pass-through and constant elasticity, so they are the authors' model, not an observation.",
+  },
   {
     id: "price_pass_through",
     question: "Did the tax actually reach the shelf price?",
@@ -133,4 +143,27 @@ export function assertRowId(id: string): string {
 
 export function rowById(id: string): Row | undefined {
   return CORPUS.find((r) => r.id === id);
+}
+
+/**
+ * What this corpus actually covers, computed from the rows rather than written
+ * by hand so it can never drift from reality.
+ *
+ * This exists because the app was hiding its own scope. A reader typed into an
+ * empty box and discovered the limits by being refused, which makes narrow
+ * coverage look like failure instead of the deliberate cost of hand-typing every
+ * number from its paper.
+ */
+export function corpusScope() {
+  const sources = new Set(CORPUS.map((r) => r.study));
+  const dois = new Set(CORPUS.map((r) => r.doi).filter(Boolean));
+  const withInterval = CORPUS.filter((r) => r.ci_low !== null && r.ci_high !== null);
+  return {
+    rows: CORPUS.length,
+    sources: sources.size,
+    dois: dois.size,
+    withInterval: withInterval.length,
+    industryFunded: CORPUS.filter((r) => r.industry_funded).length,
+    questions: OUTCOMES.map((o) => o.question),
+  };
 }

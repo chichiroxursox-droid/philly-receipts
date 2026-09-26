@@ -7,6 +7,10 @@ const BADGE: Record<string, { label: string; cls: string }> = {
     label: "number found in quote",
     cls: "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300",
   },
+  authors_counterfactual: {
+    label: "authors' counterfactual, not an observation",
+    cls: "bg-violet-100 text-violet-800 dark:bg-violet-500/15 dark:text-violet-300",
+  },
   null_result: {
     label: "null result, no point estimate published",
     cls: "bg-neutral-200 text-neutral-700 dark:bg-neutral-700/50 dark:text-neutral-300",

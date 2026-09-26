@@ -43,6 +43,12 @@ const SUBJECT =
 
 const KEYWORDS: { outcome: OutcomeId; terms: RegExp }[] = [
   {
+    outcome: "rate_counterfactual",
+    // A rate change is the mayor's actual lever, so it outranks the outcome words.
+    terms:
+      /\b(double|doubled|doubling|triple|halve|halved|raise the (tax|rate)|lower the (tax|rate)|increase the (tax|rate)|cut the (tax|rate)|tax rate|rate to|\d+\s*cents? (per|an|\/)\s*(ounce|oz)|higher tax|lower tax|repeal|abolish|scrap the tax)\b/i,
+  },
+  {
     outcome: "price_pass_through",
     // "cost" alone is out. "Did it cost jobs" is not a question about prices.
     terms:

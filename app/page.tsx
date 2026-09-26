@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import Forest from "@/components/Forest";
 import SourceRow from "@/components/SourceRow";
 import Cited from "@/components/Cited";
+import Methods from "@/components/Methods";
+import Scope from "@/components/Scope";
 import TippingPoint from "@/components/TippingPoint";
 import { taxedOunces } from "@/lib/band.ts";
 import { OUTCOMES, outcomeById, rowById, viewFor, type OutcomeId } from "@/lib/corpus.ts";
@@ -11,10 +13,10 @@ import { noEvidence, routeByRules, type Routing } from "@/lib/router.ts";
 
 const EXAMPLES = [
   "What if Philadelphia doubled the soda tax?",
+  "Raise the rate to 3 cents per ounce",
   "Did the beverage tax cost jobs?",
   "Did people just buy soda outside the city?",
   "Raise the Philly minimum wage to $20 an hour",
-  "What would a soda tax do in Chicago?",
   "Build a monorail down Broad Street",
 ];
 
@@ -103,6 +105,8 @@ export default function Home() {
           ))}
         </div>
       </form>
+
+      {!routing && <Scope />}
 
       {routing && (
         <section
@@ -253,6 +257,8 @@ export default function Home() {
           </div>
         </>
       )}
+
+      <Methods />
 
       <footer className="mt-16 border-t border-neutral-200 pt-6 text-[13px] leading-relaxed text-neutral-500 dark:border-neutral-800 dark:text-neutral-400">
         <p>
