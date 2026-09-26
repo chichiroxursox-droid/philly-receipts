@@ -84,3 +84,22 @@ export function viewFor(o: Outcome) {
     consistency: consistency(plotted),
   };
 }
+
+const IDS = new Set(CORPUS.map((r) => r.id));
+
+/**
+ * Provenance guard. Every number on screen renders through this, so a number
+ * without a real corpus row id is a crash, not a silent unsourced figure.
+ */
+export function assertRowId(id: string): string {
+  if (!IDS.has(id)) {
+    throw new Error(
+      `Unsourced number: no corpus row "${id}". Every displayed figure must trace to lib/corpus.json.`
+    );
+  }
+  return id;
+}
+
+export function rowById(id: string): Row | undefined {
+  return CORPUS.find((r) => r.id === id);
+}
