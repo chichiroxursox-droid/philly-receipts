@@ -223,3 +223,15 @@ Read this first tomorrow. The build is DONE. Do not add features.
 - It correctly failed on its own first run because its own files were uncommitted. Now all ten PASS.
 - This is the 9am Sunday command. SUBMIT.md opens with it.
 - Two small self-inflicted bugs while writing it: the heredoc wrote to `scripts/` before `mkdir -p`, so the file silently did not exist; and I left a stub `check()` plus a `results.length = 0` in the first draft. Rewrote clean.
+
+### Sat 4:15pm, Hour 6.3 — CORRECTION
+
+- **I was wrong about tracks, and Ethan caught it.**
+- At ~1:25pm the Devpost page listed **11 prizes** with no OwlHacks tracks, and I wrote in devpost-2026-verified.md that "there are no tracks in 2026", removed "Track: Philly Special" from the Devpost draft, and told Ethan not to write a track on the submission.
+- Re-read at ~4:10pm: the page now lists **13 prizes**. Two OwlHacks tracks were added after my check:
+  - **[OwlHacks] Philly Special**, 1 winner, prize TBA. Wildcard track, "any idea that doesn't fit neatly into a single harbor."
+  - **[OwlHacks] Health and Wellness**, 1 winner, prize TBA.
+- **Philly Receipts goes in Philly Special.** A Philadelphia-only evidence tool built on the Philadelphia Beverage Tax is exactly hyper-local. Health and Wellness is a weaker fit; that track wants tech that helps people feel better, not an evidence tool about a health policy. Open question for an organizer: can one project opt into two OwlHacks tracks? In 2025 it was one per project.
+- Fixed: devpost-draft.md track line restored, devpost-2026-verified.md rewritten with the correction, SUBMIT.md gained a Track field and the corrected opt-in list.
+- **LESSON, and this is the real one:** the Devpost page was still being filled in DURING the event. Judging criteria still say TBD. "Not listed yet" is not "does not exist", and I stated an absence as a settled fact. Re-check anything on a page that is visibly still in progress, and phrase an absence as "not listed as of <time>" rather than "gone".
+- Judging criteria: STILL "TBD" as of 4:10pm.
