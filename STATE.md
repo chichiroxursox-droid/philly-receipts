@@ -180,3 +180,39 @@ If a checkpoint runs 90 minutes late, apply the next scope cut and log it.
 - **Keyboard:** the forest plot dots are genuinely reachable. Twelve tabs lands on "Petimar et al., 1.02 cents/oz" and Enter selects its source row. That was built on the first pass and is now verified working rather than assumed.
 - **One finding, not fixed on purpose:** six tap targets are under 24 CSS px tall. All six are inline links inside running text, DOIs and "Source on GitHub" and the inline Cited figures. WCAG 2.2's target-size rule carries an explicit exception for links inline in a sentence, so these pass. Adding padding would risk a visual regression at hour 5 for a non-issue. Documented rather than churned.
 - Scope cuts applied so far: NONE.
+
+---
+
+## HANDOFF, Sat 3:30pm, Hour 5.5
+
+Read this first tomorrow. The build is DONE. Do not add features.
+
+### Where it stands
+- Prod: https://philly-receipts.vercel.app, 356ms load, verified across 3 viewports x 2 colour schemes x 6 tabs with zero console errors.
+- Repo: github.com/chichiroxursox-droid/philly-receipts, public, 19 commits, first at Sat 10:18:00 EDT.
+- 29 corpus rows, 16 sources, 11 DOIs, 9 with published intervals, 8 outcomes.
+- 45 tests. `npm run verify` = clean tsc + tests + build. ALWAYS run it before deploying, and check `$?`, never chain off a grep.
+- Backup video: ~/Desktop/philly-receipts-demo.mp4, 61s, already on the phone via iCloud Desktop sync.
+
+### Blocked on Ethan, nothing else
+1. Confirm he has JOINED the hackathon on Devpost. The Google Form is a different thing. The participants list needs a login, so this cannot be checked for him. **This is the only way the weekend is actually lost.**
+2. Register a domain. Verified available Sat 12:05pm: receipts.tech, phillyreceipts.tech, thereceipts.tech, phillyreceipts.com/.org.
+3. Free Gemini key if he wants that prize tag to be honest. Code path is live, `ROUTER_ORDER` defaults to gemini first.
+4. Read devpost-draft.md and say what does not sound like him.
+
+### Facts verified from the Devpost page, Sat ~1:25pm
+- Deadline **Sun Sep 27 10:00am EDT**.
+- Judging criteria: still literally "TBD".
+- **No tracks in 2026.** Philly Special is gone. Do not write a track on the submission.
+- Six judges, all professors.
+- 11 prizes, 23 participants as of 3:30pm.
+
+### Lessons from today, do not relearn these
+- `npm test` CANNOT catch a type error here. Node strips types without checking. Only tsc or the build does.
+- A python `str.replace` with a wrong anchor is a SILENT no-op. Assert the anchor before and after, every time.
+- Do not use `||` as a patch guard. `node -e "require('./lib/corpus.ts')" || python3 ...` short-circuited because Node 24 strips types and the require succeeded.
+- Chaining a deploy off a grep runs it even when verify failed. Write to a log, check `$?`.
+- iCloud writes "name 2.ts" conflict copies into `.next` because this Desktop is synced. `verify` cleans first.
+- "No overflow and no console errors" is NOT "legible". Measure rendered text size. The plot shipped 6.1px labels on a phone and every automated check passed.
+- Devpost 403s a plain fetch now. Needs a browser user agent.
+- Check every claim you write into the README or the Devpost copy. Two of mine were false when written: quote verification was not wired in, and the interval count was ten when it was nine.
