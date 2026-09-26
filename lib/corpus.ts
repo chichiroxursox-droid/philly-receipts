@@ -45,7 +45,7 @@ export const OUTCOMES: Outcome[] = [
     question: "Did people actually drink less, or just shop elsewhere?",
     short: "Volume sold",
     plotUnits: "percent",
-    axisLabel: "percent change in taxed beverage volume, net of cross-border purchases",
+    axisLabel: "percent change in volume, net of border",
     alsoShow: ["volume_city"],
     takeaway:
       "In-city sales fell hard. Once purchases just over the city line are counted, the drop shrinks. No paper here published an interval, so the spread between them is all the uncertainty you get.",
@@ -55,7 +55,7 @@ export const OUTCOMES: Outcome[] = [
     question: "Did people just switch to candy?",
     short: "Substitution",
     plotUnits: "percent of the SSB sugar decrease offset",
-    axisLabel: "percent of the sugar drop from taxed drinks that came back as sugar from food",
+    axisLabel: "percent of the sugar drop offset by food",
     takeaway:
       "Two teams, two data sources, two answers. Lozano-Rojas used a household panel and found people bought more sugar from sweetened foods, enough to cancel roughly a fifth of the sugar drop inside the city and more than a third once you count the border counties. Petimar used store scanner data and reported no evidence of food substitution at all. They did not measure the same thing on the same data, so this is a disagreement rather than a contradiction, and neither team is doing anything wrong.",
   },
