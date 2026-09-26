@@ -141,8 +141,13 @@ npm run dev
 It runs with **no API keys at all.** The rules layer handles every path in the
 demo. Keys only add a model fallback for inputs the rules cannot classify:
 
-- `TYPESAFE_API_KEY` for TypeSafe Jev, tried first
-- `ANTHROPIC_API_KEY` for Claude, tried second
+- `GEMINI_API_KEY` for Google Gemini, with the label set enforced by the API's own
+  response schema rather than by hoping the model complies
+- `TYPESAFE_API_KEY` for TypeSafe Jev
+- `ANTHROPIC_API_KEY` for Claude
+
+Order is set by `ROUTER_ORDER`, default `gemini,jev,claude`. Whichever key exists
+is the one that actually runs.
 
 With neither set, an unclassifiable input gets the no-evidence refusal, which is
 the correct answer anyway.

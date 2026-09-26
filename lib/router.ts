@@ -7,7 +7,7 @@ export type Routing = {
   matched_outcome: OutcomeId | null;
   reason: string;
   /** Which layer decided. Shown in the UI so the demo is auditable. */
-  decided_by: "rules" | "jev" | "claude" | "fallback";
+  decided_by: "rules" | "jev" | "claude" | "gemini" | "fallback";
 };
 
 /**

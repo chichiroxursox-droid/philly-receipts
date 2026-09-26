@@ -116,3 +116,19 @@ If a checkpoint runs 90 minutes late, apply the next scope cut and log it.
 - Done-when result: 38 of 38 tests green, verify clean, deployed, all five tabs walked in a real browser on prod with zero console errors. Backup video re-recorded, 55.2s, now includes the Health beat.
 - Next step: nothing blocking. Remaining work is Ethan's.
 - Scope cuts applied so far: NONE.
+
+### Sat 1:35pm, Hour 3.6
+
+- Milestone: read the OwlHacks 2026 Devpost page directly. It answers the judging question we parked last night, and it changes the submission.
+- **Devpost deadline is Sep 27 10:00am EDT**, so the 9:30am target holds a 30 minute buffer.
+- **JUDGING CRITERIA still says literally "TBD"** on the page. Not answerable from Devpost. Ask a volunteer at check in.
+- **THERE ARE NO TRACKS IN 2026.** The 2025 structure including Philly Special is gone. Three generic prizes plus eight MLH sponsor prizes, eleven total. The Devpost draft said "Track: Philly Special" and that line is now removed. It would have been wrong on the submission.
+- **All six judges are professors.** No industry judges. That is the best possible audience for a project whose pitch is methodological honesty.
+- **22 participants registered on Devpost** against 11 prizes.
+- Plain HTTP to Devpost now returns 403. Needs a browser user agent. Updating the old note that said plain fetch works.
+
+- Shipped in response: **Gemini as a router provider**, with the label set enforced by the API's own `responseSchema` enum rather than by trusting the model to comply. Provider order is now `ROUTER_ORDER`, default `gemini,jev,claude`, so whichever key exists is the one that actually runs. A provider that never fires would not honestly earn a "Best Use of" tag.
+- Deliberately NOT chasing Tiger Data, Vultr, Solana or Presage. Each means adding infrastructure this project does not need, and six professors would notice.
+- Done-when result: 38 of 38 green, verify clean, deployed.
+- Next step: Ethan's. Domain, Gemini key, read the draft, submit before 10:00am Sunday.
+- Scope cuts applied so far: NONE.

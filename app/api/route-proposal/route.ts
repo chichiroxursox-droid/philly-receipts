@@ -29,16 +29,27 @@ export async function POST(req: Request) {
   const byRules = routeByRules(text);
   if (byRules) return NextResponse.json(byRules);
 
-  const viaJev = await askJev(text);
-  if (viaJev) return NextResponse.json(viaJev);
-
-  const viaClaude = await askClaude(text);
-  if (viaClaude) return NextResponse.json(viaClaude);
+  // Provider order is configurable so whichever key exists is the one that runs.
+  // Default puts Gemini first when its key is present, because a provider that
+  // never actually fires is not a provider.
+  const order = (process.env.ROUTER_ORDER || "gemini,jev,claude").split(",");
+  for (const name of order) {
+    const fn = PROVIDERS[name.trim()];
+    if (!fn) continue;
+    const r = await fn(text);
+    if (r) return NextResponse.json(r);
+  }
 
   return NextResponse.json(noEvidence(text));
 }
 
-function toRouting(choice: string, decided_by: "jev" | "claude"): Routing | null {
+const PROVIDERS: Record<string, (t: string) => Promise<Routing | null>> = {
+  gemini: askGemini,
+  jev: askJev,
+  claude: askClaude,
+};
+
+function toRouting(choice: string, decided_by: "jev" | "claude" | "gemini"): Routing | null {
   if (choice === "out_of_jurisdiction") {
     return {
       verdict: "out_of_jurisdiction",
@@ -118,6 +129,53 @@ async function askClaude(text: string): Promise<Routing | null> {
     const raw = String(data?.content?.[0]?.text ?? "").trim().toLowerCase();
     const pick = CHOICES.find((c) => raw.includes(c));
     return pick ? toRouting(pick, "claude") : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Google Gemini. Same contract as the others: a label, never a quantity. */
+async function askGemini(text: string): Promise<Routing | null> {
+  const key = process.env.GEMINI_API_KEY;
+  if (!key) return null;
+  const model = process.env.GEMINI_MODEL || "gemini-2.0-flash";
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+      {
+        method: "POST",
+        headers: { "x-goog-api-key": key, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          systemInstruction: {
+            parts: [
+              {
+                text:
+                  `Classify a policy proposal about Philadelphia into exactly one of: ${CHOICES.join(", ")}. ` +
+                  `Reply with the label only. Use out_of_jurisdiction when Philadelphia's city government ` +
+                  `has no legal power over the thing proposed. Use no_evidence when it is a city matter but ` +
+                  `no outcome label covers it. Never explain and never give a number.`,
+              },
+            ],
+          },
+          contents: [{ role: "user", parts: [{ text }] }],
+          generationConfig: {
+            temperature: 0,
+            maxOutputTokens: 16,
+            // Closed vocabulary enforced by the API, not by hoping.
+            responseMimeType: "text/x.enum",
+            responseSchema: { type: "STRING", enum: [...CHOICES] },
+          },
+        }),
+        signal: AbortSignal.timeout(6000),
+      }
+    );
+    if (!res.ok) return null;
+    const data = await res.json();
+    const raw = String(data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "")
+      .trim()
+      .toLowerCase();
+    const pick = CHOICES.find((c) => raw.includes(c));
+    return pick ? toRouting(pick, "gemini") : null;
   } catch {
     return null;
   }
