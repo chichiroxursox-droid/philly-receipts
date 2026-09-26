@@ -53,6 +53,12 @@ side by side and read as agreement. They are not the same quantity, so Seiler is
 shown separately with the reason. Employment is worse, three papers and three
 units, so that view **draws no chart at all** and says why.
 
+**It finds where the conclusion flips.** The tax is 1.5 cents per ounce. Below
+that, retailers absorbed part of it; above it, shoppers paid more than the tax
+itself. The published range runs 0.94 to 2.38, so it straddles that line and the
+evidence does not settle which happened. No paper reports this, because it is a
+statement about the set of papers rather than any one of them.
+
 **It refuses on jurisdiction.** Ask it to raise the minimum wage and it will not
 model it, because Pennsylvania's Minimum Wage Act preempts municipalities from
 setting one. Ask about firearms and 18 Pa.C.S. § 6120 preempts that too.
@@ -62,12 +68,20 @@ attached. A model never decides preemption.
 
 ## The corpus
 
-14 rows, 10 distinct studies, 7 DOIs, across five outcomes: price pass-through,
-net volume, in-city volume, employment, and revenue. Four rows carry a published
-confidence interval. One is industry funded and labelled as such on screen.
+16 rows across five outcomes: price pass-through, net volume, in-city volume,
+employment, and revenue. Four rows carry a published confidence interval. One is
+industry funded and labelled as such on screen.
 
-Every row stores the verbatim sentence the number came from, so the quote sits
-under the figure and you can check it against the paper yourself.
+Every row stores the verbatim sentence its number came from. Rows are also tagged
+by what KIND of number they hold, which matters more than it sounds:
+
+- `reported` the figure is printed in the source
+- `null_result` the paper found no effect and published no point estimate. The
+  zero in the employment row is this app's encoding, not Marinello's number, and
+  it is labelled that way on screen
+- `statute` the rate as written in the Philadelphia Code
+- `official_record` collections as filed by the city
+- `budget_estimate` a city forecast, not money collected
 
 ## Traps encoded on purpose
 
@@ -94,8 +108,8 @@ a JSON file. No database. **Zero dependencies beyond what `create-next-app`
 installed.**
 
 ```
-lib/band.ts        band, GRADE consistency, tipping point, quote check, unit partition
-lib/band.test.ts   18 tests over that math
+lib/band.ts        band, GRADE consistency, tipping point, transcription guard, unit partition
+lib/band.test.ts   23 tests over that math, including a corpus-wide transcription check
 lib/corpus.ts      outcome config and the provenance guard
 lib/router.ts      the scope gate, rules layer
 lib/router.test.ts 11 tests over routing and refusals
@@ -107,7 +121,7 @@ app/api/route-proposal/  the one model call, optional
 
 ```bash
 npm install
-npm test        # 29 tests, no network
+npm test        # 35 tests, no network
 npm run dev
 ```
 

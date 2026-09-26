@@ -16,6 +16,13 @@ export type Row = {
   industry_funded: boolean;
   /** Verbatim sentence from the source containing the number. */
   quote: string;
+  /**
+   * What KIND of number the estimate is. This exists because "0" in the
+   * employment row is not a figure Marinello published, it is this app's
+   * encoding of a paper that reported no effect. Treating that 0 as a
+   * published point estimate would be the most dishonest thing in the corpus.
+   */
+  estimate_kind?: "reported" | "null_result" | "statute" | "official_record" | "budget_estimate";
   /** Scope/window caveat shown next to the row. */
   note?: string;
 };
@@ -186,6 +193,94 @@ export function quoteVerified(quote: string, sourceText: string): boolean {
   const q = normalizeForMatch(quote);
   if (q.length === 0) return false;
   return normalizeForMatch(sourceText).includes(q);
+}
+
+export type QuoteCheck = {
+  /** Safe to display the number. */
+  ok: boolean;
+  kind: "verified" | "null_result" | "budget_estimate" | "unverified";
+  detail: string;
+};
+
+/**
+ * Does the published estimate literally appear in the sentence quoted beneath it?
+ *
+ * This is the transcription guard. Hand-typing 14 numbers out of 10 papers at
+ * 3am is exactly where a digit gets dropped, and a wrong number with a real
+ * citation under it is worse than no number at all. A row that fails this does
+ * not render its figure.
+ */
+export function estimateInQuote(r: Row): boolean {
+  const q = normalizeForMatch(r.quote);
+  if (q.length === 0) return false;
+  const e = Math.abs(r.estimate);
+
+  const forms = new Set<string>([
+    String(e),
+    e.toFixed(1),
+    e.toFixed(2),
+    e.toFixed(3),
+    String(e).replace(/^0\./, "."), // statutes write $.015, never $0.015
+    e.toLocaleString("en-US"),
+  ]);
+  // A share can be printed as a percent. Seiler stores 0.97 and prints "97%".
+  // Only for values below 1, so 2.06 never goes looking for "206".
+  if (e > 0 && e < 1) {
+    forms.add(String(e * 100));
+    forms.add((e * 100).toFixed(0));
+    forms.add((e * 100).toFixed(1));
+  }
+
+  for (const f of forms) {
+    if (f && containsNumber(q, normalizeForMatch(f))) return true;
+  }
+  return false;
+}
+
+/**
+ * Substring matching is not enough for numbers. Rounding 2.6 to "3" matched the
+ * "3" inside "2.38" and happily verified a number the paper never printed. A
+ * numeric match must not be flanked by more digits or a decimal point.
+ */
+function containsNumber(haystack: string, needle: string): boolean {
+  if (!needle) return false;
+  let from = 0;
+  for (;;) {
+    const i = haystack.indexOf(needle, from);
+    if (i === -1) return false;
+    const before = i === 0 ? "" : haystack[i - 1];
+    const after = haystack[i + needle.length] ?? "";
+    if (!/[0-9.]/.test(before) && !/[0-9.]/.test(after)) return true;
+    from = i + 1;
+  }
+}
+
+/** The gate the UI actually calls. */
+export function checkQuote(r: Row): QuoteCheck {
+  if (r.estimate_kind === "null_result") {
+    return {
+      ok: true,
+      kind: "null_result",
+      detail:
+        "This paper reports no effect and publishes no point estimate. The zero is this app's encoding of a null result, not a number the authors printed.",
+    };
+  }
+  if (r.estimate_kind === "budget_estimate") {
+    return {
+      ok: true,
+      kind: "budget_estimate",
+      detail: "A figure the city forecast, not money it collected.",
+    };
+  }
+  if (estimateInQuote(r)) {
+    return { ok: true, kind: "verified", detail: "This number appears in the quoted sentence." };
+  }
+  return {
+    ok: false,
+    kind: "unverified",
+    detail:
+      "The stored number does not appear in the stored quote, so it is not displayed. This is a transcription failure, not a finding.",
+  };
 }
 
 /** Revenue arithmetic. Division, not economics. */

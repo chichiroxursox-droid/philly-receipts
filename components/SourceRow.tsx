@@ -1,6 +1,25 @@
 "use client";
 
-import { hasInterval, type Row } from "@/lib/band.ts";
+import { checkQuote, hasInterval, type Row } from "@/lib/band.ts";
+
+const BADGE: Record<string, { label: string; cls: string }> = {
+  verified: {
+    label: "number found in quote",
+    cls: "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300",
+  },
+  null_result: {
+    label: "null result, no point estimate published",
+    cls: "bg-neutral-200 text-neutral-700 dark:bg-neutral-700/50 dark:text-neutral-300",
+  },
+  budget_estimate: {
+    label: "forecast, not collections",
+    cls: "bg-amber-100 text-amber-800 dark:bg-amber-500/15 dark:text-amber-300",
+  },
+  unverified: {
+    label: "number NOT found in quote, figure withheld",
+    cls: "bg-red-100 text-red-800 dark:bg-red-500/15 dark:text-red-300",
+  },
+};
 
 export default function SourceRow({
   row,
@@ -11,6 +30,8 @@ export default function SourceRow({
   selected: boolean;
   onSelect: (id: string) => void;
 }) {
+  const check = checkQuote(row);
+  const badge = BADGE[check.kind];
   return (
     <li
       id={`src-${row.id}`}
@@ -31,7 +52,9 @@ export default function SourceRow({
       </div>
 
       <p className="mt-2 text-[15px] tabular-nums text-neutral-900 dark:text-neutral-100">
-        <span className="font-semibold">{row.estimate.toLocaleString()}</span>{" "}
+        <span className="font-semibold">
+          {check.ok ? row.estimate.toLocaleString() : "withheld"}
+        </span>{" "}
         <span className="text-neutral-500 dark:text-neutral-400">{row.units}</span>
         {hasInterval(row) ? (
           <span className="text-neutral-500 dark:text-neutral-400">
@@ -43,6 +66,15 @@ export default function SourceRow({
             no interval published
           </span>
         )}
+      </p>
+
+      <p className="mt-2">
+        <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${badge.cls}`}>
+          {badge.label}
+        </span>
+      </p>
+      <p className="mt-1.5 text-[12.5px] leading-relaxed text-neutral-500 dark:text-neutral-400">
+        {check.detail}
       </p>
 
       {row.note && (

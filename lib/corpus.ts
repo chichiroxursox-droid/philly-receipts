@@ -20,6 +20,8 @@ export type Outcome = {
   alsoShow?: string[];
   /** What the reader should take away. Written by hand, never generated. */
   takeaway: string;
+  /** Why no chart is drawn. Required whenever plotUnits is null. */
+  noChartReason?: string;
 };
 
 export const OUTCOMES: Outcome[] = [
@@ -49,6 +51,8 @@ export const OUTCOMES: Outcome[] = [
     // Three papers, three units. There is no honest shared axis.
     plotUnits: null,
     axisLabel: "",
+    noChartReason:
+      "These three papers do not share a unit, so there is no axis they can honestly share. Putting them on one would assert they measured the same quantity. They did not.",
     takeaway:
       "These three studies do not share a unit, so this tool will not draw them on one axis. Two looked at administrative data and found nothing. The third is an industry-funded input-output model reporting jobs nobody counted.",
   },
@@ -58,8 +62,10 @@ export const OUTCOMES: Outcome[] = [
     short: "Revenue",
     plotUnits: null,
     axisLabel: "",
+    noChartReason:
+      "These are city records, not study estimates, and they are not comparable quantities. One is a full year of collections, one is eleven months, one is a budget forecast, and one is the statutory rate. Charting them side by side would invite exactly the comparison that misreports this tax.",
     takeaway:
-      "This one is division, not economics. Collections divided by the statutory rate gives the taxed volume the city actually billed for.",
+      "This one is division, not economics. Collections divided by the statutory rate gives the taxed volume the city actually billed for. Watch the labels: the FY2026 figure covers eleven months, not a year, and the larger number next to it is a budget forecast rather than money collected. Comparing either to a full year is the most common way this tax gets misreported.",
   },
 ];
 

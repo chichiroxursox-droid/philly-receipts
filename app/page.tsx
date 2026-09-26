@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Forest from "@/components/Forest";
 import SourceRow from "@/components/SourceRow";
 import Cited from "@/components/Cited";
+import TippingPoint from "@/components/TippingPoint";
 import { taxedOunces } from "@/lib/band.ts";
 import { OUTCOMES, outcomeById, rowById, viewFor, type OutcomeId } from "@/lib/corpus.ts";
 import { noEvidence, routeByRules, type Routing } from "@/lib/router.ts";
@@ -167,8 +168,7 @@ export default function Home() {
                 No chart, on purpose.
               </p>
               <p className="mt-1.5 text-[14px] leading-relaxed text-neutral-600 dark:text-neutral-300">
-                These papers do not share a unit, so there is no axis they can honestly share.
-                Putting them on one would assert they measured the same quantity. They did not.
+                {outcome.noChartReason}
               </p>
               <ul className="mt-3 space-y-1 text-[13.5px] text-neutral-600 dark:text-neutral-400">
                 {[...view.plotted, ...view.otherScale].map((r) => (
@@ -176,7 +176,7 @@ export default function Home() {
                     <span className="font-medium text-neutral-900 dark:text-neutral-100">
                       {r.study.split(",")[0]}
                     </span>{" "}
-                    measured in <span className="italic">{r.units}</span>
+                    reported in <span className="italic">{r.units}</span>
                   </li>
                 ))}
               </ul>
@@ -208,6 +208,17 @@ export default function Home() {
                 ))}
               </ul>
             </div>
+          )}
+
+          {outcomeId === "price_pass_through" && (
+            <TippingPoint
+              band={view.band}
+              threshold={1.5}
+              thresholdRowId="phila-code-rate"
+              below="retailers absorbed part of the tax and shoppers paid less than its face value."
+              above="the whole tax reached the shelf and then some, so shoppers paid more than the tax itself."
+              onSelect={setSelected}
+            />
           )}
 
           {outcomeId === "revenue" && <RevenuePanel onSelect={setSelected} />}

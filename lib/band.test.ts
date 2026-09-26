@@ -11,6 +11,8 @@ import {
   taxedOunces,
   hasInterval,
   partitionByUnits,
+  checkQuote,
+  estimateInQuote,
   type Row,
 } from "./band.ts";
 
@@ -168,4 +170,35 @@ test("employment rows share no common unit, so no axis is possible", () => {
   const rows = corpus.filter((r) => r.outcome === "employment");
   const units = new Set(rows.map((r) => r.units));
   assert.equal(units.size, rows.length);
+});
+
+test("every reported row's number really appears in its own quote", () => {
+  // The transcription guard, run over the whole corpus. If this fails, a digit
+  // was dropped while hand-typing at the event and a wrong number is about to
+  // render under a real citation.
+  const bad = corpus.filter((r) => checkQuote(r).kind === "unverified");
+  assert.deepEqual(bad.map((r) => r.id), []);
+});
+
+test("the employment zero is flagged as a null result, not a published estimate", () => {
+  const m = corpus.find((r) => r.id === "marinello-2021-employment")!;
+  const c = checkQuote(m);
+  assert.equal(c.kind, "null_result");
+  assert.match(c.detail, /not a number the authors printed/);
+});
+
+test("estimateInQuote catches a dropped digit", () => {
+  const real = corpus.find((r) => r.id === "bleich-2021-passthrough")!;
+  assert.equal(estimateInQuote(real), true);
+  assert.equal(estimateInQuote({ ...real, estimate: 2.6 }), false);
+});
+
+test("a statute written $.015 still matches an estimate of 0.015", () => {
+  const rate = corpus.find((r) => r.id === "phila-code-rate")!;
+  assert.equal(estimateInQuote(rate), true);
+});
+
+test("the FY2026 figure is tagged as eleven months, not a year", () => {
+  const r = corpus.find((r) => r.id === "phila-fy2026-ytd-11mo")!;
+  assert.match(r.units, /ELEVEN months/);
 });
